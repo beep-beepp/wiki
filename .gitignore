@@ -1,0 +1,46 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+out/
+gen/
+build/
+target/
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Others
+*.swp
+*.swo
