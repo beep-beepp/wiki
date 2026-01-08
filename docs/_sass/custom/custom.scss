@@ -1,0 +1,23 @@
+// 링크 색상 변경 (밝은 파란색)
+$link-color: #1E9EFF;
+
+// 사이드바 활성 링크 색상
+.navigation-list-link.active {
+  color: $link-color !important;
+}
+
+// 사이드바 링크 기본 색상
+.navigation-list-link {
+  color: #5c5962 !important;
+}
+
+// 본문 링크 색상
+a {
+  color: $link-color !important;
+}
+
+// 버튼 색상
+.btn-primary {
+  background-color: $link-color !important;
+  border-color: $link-color !important;
+}

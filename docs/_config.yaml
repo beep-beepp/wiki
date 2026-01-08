@@ -1,0 +1,9 @@
+url: https://beep-beepp.github.io
+baseurl: /wiki
+permalink: /:categories/:title
+remote_theme: just-the-docs/just-the-docs
+title: 우리는 주니어다!
+description: 일단 만들어봤다!
+
+# 네비게이션 설정
+nav_fold: true
