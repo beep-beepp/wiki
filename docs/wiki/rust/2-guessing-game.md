@@ -14,7 +14,7 @@ fn main() { // main함수: 모든 Rust 프로그램의 시작점
     println!("Guess the number!"); // 문자열 출력 매크로
 
     // 현재 스레드용 난수 생성기를 통한 비밀 숫자 생성
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let secret_number = rand::rng().random_range(1..100);
 
     println!("The secret number is: {secret_number}");  // {}로 값을 끼워넣음 (플레이스홀더)
 
@@ -49,7 +49,7 @@ fn main() { // main함수: 모든 Rust 프로그램의 시작점
         let guess: u32 = guess.trim().parse().expect("Please type a number!");
         // 방법2 - 숫자 외 입력 시 그 입력을 무시하고 계속 추측할 수 있도록 함
         // parse가 Result 타입을 반환하고, 이를 직접 처리하는 방식
-        let guess: u32 = guess.trim().parse() {
+        let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(_) => { // _ : 모든 에러
                 println!("Please type a number!");
