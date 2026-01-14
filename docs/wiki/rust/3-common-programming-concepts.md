@@ -376,115 +376,6 @@ let first = a[0];
 * 대부분 상황에서 `Vec<T>` 사용 권장됨.
 * 고정 크기일 때만 Array 사용함.
 
-<details>
-<summary>Stack(스택) VS. Heap(힙)</summary>
-
-| 차이는 "누가 언제 메모리를 해제하느냐" <br>
-
-1️⃣ 스택: 컴파일러가 100% 관리 <br>
-
-<pre><code class="language-rust">fn main() {
-    let x = 10;
-    let y = 20;
-}
-</code></pre>
-
-이 코드는 이렇게 동작한다: <br>
-main 시작 <br>
-  → 스택에 x 자리 확보 <br>
-  → 스택에 y 자리 확보 <br>
-main 끝 <br>
-  → x, y 자동 제거 <br>
-
-
-특징: <br>
-- 크기가 컴파일 타임에 정해짐 <br>
-- 메모리는 함수 스코프와 완전히 일치 <br>
-- drop을 부를 필요도 없음 <br>
-- CPU는 스택 포인터만 움직이면 됨 → 극도로 빠름 <br>
-
-Rust에서 스택 값: <br>
-<pre><code class="language-rust">i32, f64, bool, (i32, i32), struct(힙 없는)
-</code></pre>
-
-2️⃣ 힙: 런타임이 관리, Rust는 "소유권"으로 통제 <br>
-<pre><code class="language-rust">fn main() {
-    let s = String::from("hello");
-}
-</code></pre>
-
-실제 구조: <br>
-<pre><code>스택:
-s → (ptr, len, cap)
-
-힙:
-"hello"
-</code></pre>
-
-즉: <br>
-- 스택에는 주소만 <br>
-- 실제 데이터는 힙에 있음 <br>
-
-이때 중요한 점: <br>
-| Rust는 GC가 없기 때문에, 누가 이 힙 메모리를 해제할지 컴파일러가 추적해야 한다. <br>
-그래서 등장하는 게 소유권(ownership). <br>
-
-3️⃣ 힙 메모리 해제 규칙 <br>
-<pre><code class="language-rust">{
-    let s = String::from("hello"); // 힙 할당
-} // ← 여기서 s가 drop됨 → 힙 메모리 free
-</code></pre>
-
-이 규칙: <br>
-| "힙 데이터는 소유자가 스코프를 벗어나면 자동 해제된다." <br>
-이게 Rust의 RAII 모델.
-
-C: <br>
-<pre><code class="language-c">malloc → free 안 하면 leak
-</code></pre>
-
-Java: <br>
-<pre><code class="language-java">GC가 나중에 정리
-</code></pre>
-
-Rust: <br>
-<pre><code class="language-rust">스코프 종료 = free
-</code></pre>
-
-4️⃣ 그래서 스택 vs 힙 관리 방식의 진짜 차이 <br>
-
-<table>
-<tr><th>구분</th><th>스택</th><th>힙</th></tr>
-<tr><td>누가 관리?</td><td>CPU + 컴파일러</td><td>Rust 소유권 시스템</td></tr>
-<tr><td>할당</td><td>스코프 시작</td><td>런타임 (<code>Box</code>, <code>String</code>, <code>Vec</code>)</td></tr>
-<tr><td>해제</td><td>스코프 종료</td><td>소유자가 drop될 때</td></tr>
-<tr><td>비용</td><td>거의 0</td><td>할당 + 해제 비용 있음</td></tr>
-<tr><td>버그</td><td>거의 없음</td><td>double free, use-after-free → Rust가 차단</td></tr>
-</table>
-
-5️⃣ borrow가 왜 필요한가? <br>
-
-<pre><code class="language-rust">let s = String::from("hello");
-let r = &s;
-</code></pre>
-
-r은 힙 데이터를 가리키지만 소유자가 아님 <br>
-그래서 Rust는 이렇게 규칙을 둔다: <br>
-| "힙 메모리는 소유자만 해제할 수 있고, 참조자는 살아 있는 동안 소유자가 죽지 못한다." <br>
-이게 borrow checker의 본질이다. <br>
-
-6️⃣ 한 줄로 정리 <br>
-스택은 '자동으로 쌓이고 사라지는 메모리'이고, <br>
-힙은 '누가 소유하는지 추적해야 하는 메모리'다. <br>
-Rust는 그 소유 추적을 컴파일 타임에 한다. <br>
-
-이제 Box<T>, Rc<T>, Arc<T> 들어가면 <br>
-"힙을 여러 명이 소유하는 방법"으로 확장된다. <br>
-그게 Rust의 진짜 재미 구간 😄 <br>
-- by. chatGPT <br>
-
-</details>
-
 ## 3. Functions
 ### 1. 함수 기본 구조
 - Rust에서 함수는 `fn` 키워드로 정의됨
@@ -820,3 +711,112 @@ for number in (1..4).rev() {
 - `1..4`는 1,2,3 생성함
 - `rev()`는 역순으로 순회함
 - countdown 같은 로직에 자주 사용됨
+
+<details>
+<summary>Stack(스택) VS. Heap(힙)</summary>
+
+| 차이는 "누가 언제 메모리를 해제하느냐" <br>
+
+1️⃣ 스택: 컴파일러가 100% 관리 <br>
+
+<pre><code class="language-rust">fn main() {
+    let x = 10;
+    let y = 20;
+}
+</code></pre>
+
+이 코드는 이렇게 동작한다: <br>
+main 시작 <br>
+  → 스택에 x 자리 확보 <br>
+  → 스택에 y 자리 확보 <br>
+main 끝 <br>
+  → x, y 자동 제거 <br>
+
+
+특징: <br>
+- 크기가 컴파일 타임에 정해짐 <br>
+- 메모리는 함수 스코프와 완전히 일치 <br>
+- drop을 부를 필요도 없음 <br>
+- CPU는 스택 포인터만 움직이면 됨 → 극도로 빠름 <br>
+
+Rust에서 스택 값: <br>
+<pre><code class="language-rust">i32, f64, bool, (i32, i32), struct(힙 없는)
+</code></pre>
+
+2️⃣ 힙: 런타임이 관리, Rust는 "소유권"으로 통제 <br>
+<pre><code class="language-rust">fn main() {
+    let s = String::from("hello");
+}
+</code></pre>
+
+실제 구조: <br>
+<pre><code>스택:
+s → (ptr, len, cap)
+
+힙:
+"hello"
+</code></pre>
+
+즉: <br>
+- 스택에는 주소만 <br>
+- 실제 데이터는 힙에 있음 <br>
+
+이때 중요한 점: <br>
+| Rust는 GC가 없기 때문에, 누가 이 힙 메모리를 해제할지 컴파일러가 추적해야 한다. <br>
+그래서 등장하는 게 소유권(ownership). <br>
+
+3️⃣ 힙 메모리 해제 규칙 <br>
+<pre><code class="language-rust">{
+    let s = String::from("hello"); // 힙 할당
+} // ← 여기서 s가 drop됨 → 힙 메모리 free
+</code></pre>
+
+이 규칙: <br>
+| "힙 데이터는 소유자가 스코프를 벗어나면 자동 해제된다." <br>
+이게 Rust의 RAII 모델.
+
+C: <br>
+<pre><code class="language-c">malloc → free 안 하면 leak
+</code></pre>
+
+Java: <br>
+<pre><code class="language-java">GC가 나중에 정리
+</code></pre>
+
+Rust: <br>
+<pre><code class="language-rust">스코프 종료 = free
+</code></pre>
+
+4️⃣ 그래서 스택 vs 힙 관리 방식의 진짜 차이 <br>
+
+<table>
+<tr><th>구분</th><th>스택</th><th>힙</th></tr>
+<tr><td>누가 관리?</td><td>CPU + 컴파일러</td><td>Rust 소유권 시스템</td></tr>
+<tr><td>할당</td><td>스코프 시작</td><td>런타임 (<code>Box</code>, <code>String</code>, <code>Vec</code>)</td></tr>
+<tr><td>해제</td><td>스코프 종료</td><td>소유자가 drop될 때</td></tr>
+<tr><td>비용</td><td>거의 0</td><td>할당 + 해제 비용 있음</td></tr>
+<tr><td>버그</td><td>거의 없음</td><td>double free, use-after-free → Rust가 차단</td></tr>
+</table>
+
+5️⃣ borrow가 왜 필요한가? <br>
+
+<pre><code class="language-rust">let s = String::from("hello");
+let r = &s;
+</code></pre>
+
+r은 힙 데이터를 가리키지만 소유자가 아님 <br>
+그래서 Rust는 이렇게 규칙을 둔다: <br>
+| "힙 메모리는 소유자만 해제할 수 있고, 참조자는 살아 있는 동안 소유자가 죽지 못한다." <br>
+이게 borrow checker의 본질이다. <br>
+
+6️⃣ 한 줄로 정리 <br>
+스택은 '자동으로 쌓이고 사라지는 메모리'이고, <br>
+힙은 '누가 소유하는지 추적해야 하는 메모리'다. <br>
+Rust는 그 소유 추적을 컴파일 타임에 한다. <br>
+
+이제 Box<T>, Rc<T>, Arc<T> 들어가면 <br>
+"힙을 여러 명이 소유하는 방법"으로 확장된다. <br>
+그게 Rust의 진짜 재미 구간 😄 <br>
+- by. chatGPT <br>
+
+</details>
