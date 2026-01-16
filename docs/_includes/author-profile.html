@@ -1,0 +1,9 @@
+{% if page.author %}
+<div class="author-profile-card">
+  <a href="https://github.com/{{ page.author.github }}" target="_blank" rel="noopener noreferrer" class="author-avatar-link">
+    <img src="https://github.com/{{ page.author.github }}.png?size=120" alt="{{ page.author.name }}" class="author-avatar" />
+  </a>
+  <div class="author-name">{{ page.author.name }}</div>
+  <div class="author-date">{{ page.date | date: "%Y.%m.%d" }}</div>
+</div>
+{% endif %}
