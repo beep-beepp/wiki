@@ -110,4 +110,4 @@ JVM 구현체는 Java가 아닌 다른 언어로 작성된 메서드(native meth
 
 
 # 참고
-[Java SE 25](https://docs.oracle.com/javase/specs/jvms/se25/jvms25.pdf)
+- [Java SE 25](https://docs.oracle.com/javase/specs/jvms/se25/jvms25.pdf)
