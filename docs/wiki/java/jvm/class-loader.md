@@ -20,6 +20,8 @@ permalink: /java/jvm/class-loader
 JVM이 .class 파일(바이트코드)을 메모리에 올려서 실행 가능한 상태로 만드는 컴포넌트
 -> "클래스"를 load, link, initialize하는 역할
 
+![img.png](img.png)
+
 ## 동작 과정
 크게 Loading -> Linking -> Initializing
 
@@ -87,5 +89,5 @@ System ClassLoader: jdk.internal.loader.ClassLoaders$AppClassLoader@1dbd16a6
 
 
 ### 참고
-[Geeks for geeks](https://www.geeksforgeeks.org/java/how-jvm-works-jvm-architecture/)
-[Java SE 25](https://docs.oracle.com/javase/specs/jvms/se25/jvms25.pdf)
+- [Geeks for geeks - How JVM works](https://www.geeksforgeeks.org/java/how-jvm-works-jvm-architecture/)
+- [Java SE 25](https://docs.oracle.com/javase/specs/jvms/se25/jvms25.pdf)
