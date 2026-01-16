@@ -1,6 +1,6 @@
 ---
 title: "Domain Drivend Design"
-parent: ddd
+parent: Architecture
 permalink: /architecture/ddd/
 has_children: true
 nav_order: 1
