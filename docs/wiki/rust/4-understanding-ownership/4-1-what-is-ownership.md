@@ -1,8 +1,8 @@
 ---
 title: "4-1. What is Ownership?"
 parent: "4. Understanding Ownership"
-grand_parent: "Rust"
-permalink: /rust/understanding-ownership/what-is-ownership
+grand_parent: Rust
+permalink: /rust/understanding-ownership/what-is-ownership/
 nav_order: 1
 ---
 
