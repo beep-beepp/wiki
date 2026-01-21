@@ -1,8 +1,8 @@
 ---
-title: "4. Understanding Ownership"
-parent: "Rust"
-permalink: /rust/understanding-ownership
-nav_order: 4
+title: "4-1. What is Onwership?"
+parent: "4. Understanding Onwership"
+permalink: /rust/understanding-ownership/what-is-ownership
+nav_order: 1
 ---
 
 # 1. What is Ownership?
@@ -149,6 +149,7 @@ let s2 = s1; // move 발생
 ```
 
 **[ String 메모리 구조 ]**
+
 | 위치    | 저장 내용                                  |
 | ----- | -------------------------------------- |
 | Stack | 포인터(pointer), 길이(length), 용량(capacity) |
@@ -174,17 +175,20 @@ let s2 = s1; // move 발생
     - 스코프 종료 시 단 한 번만 메모리 해제됨
 
 - Move 이후 원본 변수 상태
+
 ```rust
 let s1 = String::from("hello");
 let s2 = s1;
 
 println!("{s1}"); // 컴파일 에러
 ```
+
     - s1은 move 이후 더 이상 유효하지 않음
     - 컴파일 타임에 오류 발생
     - 런타임 에러 사전 차단
 
 - Move와 Shallow Copy의 차이
+
 | 구분     | Shallow Copy | Move (Rust) |
 | ------ | ------------ | ----------- |
 | 힙 데이터  | 공유           | 공유          |
@@ -213,3 +217,86 @@ s = String::from("ahoy");
 6. 힙 메모리 즉시 해제 ( Rust 컴파일러에 의해 자동 처리됨 )
 
 ![trpl04-05.svg](img/trpl04-05.svg)
+
+## 8. Ownership and Functions
+
+- 함수를 호출하면서 값을 전달하면 소유권 규칙 적용
+- 전달되는 타입에 따라 move 또는 copy 발생
+- heap 데이터를 소유하는 타입은 기본적으로 move 발생
+- Copy 트레이트를 구현한 타입은 copy 발생
+
+```rust
+fn main() {
+    let s = String::from("hello"); // s가 스코프에 들어옴
+    takes_ownership(s);            // s의 값이 함수로 이동됨
+                                  // 이후 s는 더 이상 유효하지 않음
+
+    let x = 5;                     // x가 스코프에 들어옴
+    makes_copy(x);                 // i32는 Copy 트레이트 구현
+                                  // x는 이동되지 않음
+} // x는 스코프 종료
+  // s는 이미 이동되었으므로 특별한 동작 없음
+
+fn takes_ownership(some_string: String) {
+    println!("{some_string}");
+} // some_string 스코프 종료 시 drop 호출
+  // 힙 메모리 해제
+
+fn makes_copy(some_integer: i32) {
+    println!("{some_integer}");
+} // some_integer 스코프 종료
+  // 특별한 동작 없음
+```
+
+| 타입       | 함수 전달 시 동작 | 함수 종료 시   |
+| -------- | ---------- | --------- |
+| `String` | move 발생    | drop 호출   |
+| `i32`    | copy 발생    | 단순 스코프 종료 |
+
+## 9. Return Values and Scope
+
+- 함수가 값을 반환하면 소유권이 호출자에게 이동
+- 반환 값은 새로운 변수에 바인딩됨
+- 반환된 값의 소유자는 호출한 쪽 변수임
+
+```rust
+fn main() {
+    let s1 = gives_ownership();        // 반환 값이 s1으로 이동
+
+    let s2 = String::from("hello");    // s2 스코프 진입
+
+    let s3 = takes_and_gives_back(s2); // s2는 함수로 이동
+                                       // 반환 값은 s3으로 이동
+} // s3 drop 호출
+  // s2는 이미 이동됨
+  // s1 drop 호출
+
+fn gives_ownership() -> String {
+    let some_string = String::from("yours"); // 스코프 진입
+    some_string                              // 반환과 함께 이동
+}
+
+fn takes_and_gives_back(a_string: String) -> String {
+    a_string // 반환과 함께 이동
+}
+```
+
+- 튜플을 이용한 다중 반환 ( 값 재사용을 위한 반환값 추가 )
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+
+    let (s2, len) = calculate_length(s1);
+
+    println!("The length of '{s2}' is {len}.");
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len();
+    (s, length)
+}
+```
+
+- 한계: 너무 많은 절차와 코드를 요구함
+    -> 소유권을 이전하지 않고 값을 사용하는 기능이 있음! -> References and Borrowing
