@@ -1,5 +1,5 @@
 ---
-title: "4. Understanding Onwership"
+title: "4. Understanding Ownership"
 parent: "Rust"
 permalink: /rust/4-understanding-ownership
 has_children: true

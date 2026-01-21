@@ -1,6 +1,7 @@
 ---
-title: "4-1. What is Onwership?"
-parent: "4. Understanding Onwership"
+title: "4-1. What is Ownership?"
+parent: "4. Understanding Ownership"
+grand_parent: "Rust"
 permalink: /rust/understanding-ownership/what-is-ownership
 nav_order: 1
 ---
