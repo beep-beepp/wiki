@@ -177,6 +177,9 @@ let s2 = s1; // move 발생
     - 스코프 종료 시 단 한 번만 메모리 해제됨
 
 - Move 이후 원본 변수 상태
+    - s1은 move 이후 더 이상 유효하지 않음
+    - 컴파일 타임에 오류 발생
+    - 런타임 에러 사전 차단
 
 ```rust
 let s1 = String::from("hello");
@@ -185,11 +188,10 @@ let s2 = s1;
 println!("{s1}"); // 컴파일 에러
 ```
 
-    - s1은 move 이후 더 이상 유효하지 않음
-    - 컴파일 타임에 오류 발생
-    - 런타임 에러 사전 차단
-
 - Move와 Shallow Copy의 차이
+    - Rust에서는 shallow copy라는 용어 대신 move 사용
+    - 자동 deep copy는 절대 발생하지 않음
+    - 성능 비용 없는 기본 동작 보장
 
 | 구분     | Shallow Copy | Move (Rust) |
 | ------ | ------------ | ----------- |
@@ -198,9 +200,6 @@ println!("{s1}"); // 컴파일 에러
 | 메모리 해제 | 위험 가능성       | 안전 보장       |
 | 용어     | 개념적 분류       | Rust 핵심 규칙  |
 
-    - Rust에서는 shallow copy라는 용어 대신 move 사용
-    - 자동 deep copy는 절대 발생하지 않음
-    - 성능 비용 없는 기본 동작 보장
 
 ## 7. Scope & Assignment
 스코프 종료가 아닌 **재할당 시점**에서도 `drop` (메모리 해제 함수; rust 가 자동 호출) 발생 가능
