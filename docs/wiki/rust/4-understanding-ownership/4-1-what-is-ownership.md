@@ -161,6 +161,7 @@ let s2 = s1; // move 발생
 - 두 변수는 동일한 힙 데이터를 가리킴
 
 ![trpl04-02.svg](img/trpl04-02.svg)
+
 ![trpl04-04.svg](img/trpl04-04.svg)
 
 **[ Move가 필요한 이유 ]**
