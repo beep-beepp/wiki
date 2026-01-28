@@ -6,7 +6,6 @@ permalink: /rust/understanding-ownership/what-is-ownership/
 nav_order: 1
 ---
 
-# 1. What is Ownership?
 ## 1. 개요
 소유권은 Rust의 가장 독특한 기능이며, 언어 전반에 깊은 영향을 미칩니다.
 이 개념 덕분에 Rust는 가비지 컬렉터 없이도 메모리 안전성 보장을 할 수 있습니다.
