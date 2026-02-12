@@ -1,6 +1,6 @@
 ---
 title: "About Slack"
-parent: "etc"
+parent: "ETC"
 permalink: /etc/about-slack
 nav_order: 1
 ---
